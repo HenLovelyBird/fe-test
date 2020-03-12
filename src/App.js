@@ -1,26 +1,33 @@
 import React from 'react';
+import { Container, Row, Col } from "reactstrap";
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    state = {
+      movies: []
+    }
+
+  render(){
+
+    return (
+      <Container>
+        <Row>
+          {this.state.movies.map (movie =>
+          <Col lg-2 md-4 xs-12 > <p>{movie.Title}</p> <img src={movie.Poster} /> </Col>
+          )} 
+        </Row>
+      </Container>
+    );
+  }
+  
+  componentDidMount = async () => {
+    const movies = await fetch ("http://www.omdbapi.com/?s=avenger&apikey=24ad60e9") 
+    const moviesJson = await movies.json();
+    this.setState( {movies: moviesJson.Search} )
+  }
+
+
 }
 
 export default App;
